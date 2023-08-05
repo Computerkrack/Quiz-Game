@@ -18,6 +18,30 @@ if status == "beginning":
     print("Wilkommen zum Quiz Spiel!")
 
 match playing:
+    case 1:
+        status = "playing"
+
+        score = 0
+        total = 0
+        wrong = 0
+        for i in questions:
+            #skip None
+            if i == None:
+                continue
+
+            print(i['question'])
+            answer = input('Antwort: ').lower()
+
+            if answer == i['answer'].lower():
+                print('Richtig!')
+                score += 1
+            else:
+                print('Falsch!')
+                wrong += 1
+            total += 1
+
+        print(f'Du hast {score} von {total} Fragen richtig beantwortet!')
+        print(f'Das sind {score / total * 100}%')
     case 2:
         status = "making"
 
