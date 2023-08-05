@@ -3,7 +3,9 @@ import json
 x = None
 status = "setup"
 
-questions = [None]
+questions = []
+with open('questions.json', 'r') as f:
+    questions = json.load(f)
 
 while status == "setup":
     try:
