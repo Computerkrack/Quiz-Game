@@ -1,3 +1,5 @@
+import json
+
 x = None
 status = "setup"
 
@@ -26,6 +28,10 @@ match playing:
             match making_question_num:
                 case "quit":
                     status = "exiting"
+
+                    with open('questions.json', 'w') as f:
+                        json.dump(questions, f)
+
                 case "list":
                     index = 1
                     for i in questions:
