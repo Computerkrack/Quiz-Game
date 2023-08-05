@@ -1,12 +1,11 @@
-x = none
+import json
+
+x = None
 status = "setup"
 
-
 questions = []
-
-for i in range(10):
-    questions.append(None)
-
+with open('questions.json', 'r') as f:
+    questions = json.load(f)
 
 while status == "setup":
     try:
@@ -14,58 +13,80 @@ while status == "setup":
         status = "beginning"
     except ValueError:
         print("Bitte gib eine Zahl ein")
-
-
-# if playing == "2":
-#     status = "making"
-
-#     print("Hier siehts du eine Liste mit bereits gestellten Fragen")
-#     print("Frage1: " + )
-
-#     while status == "making":
-#         makingquestionnum = input('Welche Frage möchtest du füllen? (Falls du aufhören möchtest tippe quit ein) ')
-#         if makingquestionnum == "quit":
-#             status = "beginning"
-#         if makingquestionnum == "1":
-#             questiongood = x
-#             while questiongood != "ja":    # ist zwar schon kommentar aber egal kennst du booleans also true und false
-#                 Question = input("Was soll die Frage sein? ")
-#                 Question1 = Question
-#                 questiongood = input("Ist die Frage so gut?: " + Question + " ")
-
-#             answer_good = x
-#             while answergood != "ja":
-#                 answer = input("Gebe jetzt bitte die Anwort ein: ")
-#                 answer1 = answer 
-#                 answergood = input("Ist die Antwort so gut?: " + answer + " ")
         
 if status == "beginning":
     print("Wilkommen zum Quiz Spiel!")
 
 match playing:
+    case 1:
+        status = "playing"
+
+        score = 0
+        total = 0
+        wrong = 0
+        for i in questions:
+            #skip None
+            if i == None:
+                continue
+
+            print(i['question'])
+            answer = input('Antwort: ').lower()
+
+            if answer == i['answer'].lower():
+                print('Richtig!')
+                score += 1
+            else:
+                print('Falsch!')
+                wrong += 1
+            total += 1
+
+        print(f'Du hast {score} von {total} Fragen richtig beantwortet!')
+        print(f'Das sind {score / total * 100}%')
     case 2:
         status = "making"
 
         print('Hier siehst du eine Liste mit bereits gestellten Fragen');
 
-        index = 1
-        for i in questions:
-            print(f'Frage {index}: {i}')
-            index += 1
+        
 
         while status == "making":
-            making_question_num = input('Welche Frage möchtest du füllen? (Falls du aufhören möchtest tippe quit ein) ')
+            making_question_num = input('Welche Frage möchtest du füllen? (Falls du aufhören möchtest tippe quit ein, zum anzeigen aller Fragen list) ')
             match making_question_num:
                 case "quit":
                     status = "exiting"
+
+                    with open('questions.json', 'w') as f:
+                        json.dump(questions, f)
+
+                case "list":
+                    index = 1
+                    for i in questions:
+                        print(f'Frage {index}: {i}')
+                        index += 1
                 case _:
                     if making_question_num.isnumeric():
-                        pass # hier kann man dann checken das die zahl nicht zu groß oder zu klein ist, dafür einfach die var zu einem int machen und dann mit len() die länge der liste nehmen
-                        # wenn der index angemessen ist dann deine struktur zum schreiben musst halt auf das richtige listen element gehen
-                            # das wäre dann schon ein guter punkt könnte man einen git commit machen
-                            # naja ich gehe jetzt auch raus, schreibe mir dann einfach später nochmal
-                        # sonst dem user einfach eine fehlermeldung gönnen
+                        questions_len = len(questions)
+                        question_index = int(making_question_num) - 1
+
+                        if question_index <= 0:
+                            print('Bitte gib eine Zahl größer als 0 ein')
+                            continue
+                        elif question_index > questions_len:
+                            print(f'Die Frage {question_index + 1} existiert nicht!')
+                            continue
+                        else:
+                            question_text = input('Wie soll die Frage lauten? ')
+                            question_answer = input('Wie lautet die Antwort? ')
+
+                            question_dict = {
+                                'question': question_text,
+                                'answer': question_answer
+                            }
+
+                            if question_index > questions_len - 1:
+                                questions.append(question_dict)
+                            else:
+                                questions[question_index] = question_dict
+                        pass
                     else:
                         print("Bitte gebe eine Zahl ein!")
-
-# wenn man das nicht versteht dann gibt es das hier: ChatGPT
