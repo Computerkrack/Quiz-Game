@@ -1,10 +1,7 @@
 x = None
 status = "setup"
 
-questions = []
-
-for i in range(10):
-    questions.append(None)
+questions = [None]
 
 while status == "setup":
     try:
@@ -22,16 +19,18 @@ match playing:
 
         print('Hier siehst du eine Liste mit bereits gestellten Fragen');
 
-        index = 1
-        for i in questions:
-            print(f'Frage {index}: {i}')
-            index += 1
+        
 
         while status == "making":
-            making_question_num = input('Welche Frage möchtest du füllen? (Falls du aufhören möchtest tippe quit ein) ')
+            making_question_num = input('Welche Frage möchtest du füllen? (Falls du aufhören möchtest tippe quit ein, zum anzeigen aller Fragen list) ')
             match making_question_num:
                 case "quit":
                     status = "exiting"
+                case "list":
+                    index = 1
+                    for i in questions:
+                        print(f'Frage {index}: {i}')
+                        index += 1
                 case _:
                     if making_question_num.isnumeric():
                         questions_len = len(questions)
@@ -51,9 +50,6 @@ match playing:
                                 'question': question_text,
                                 'answer': question_answer
                             }
-
-                            print(question_index)
-                            print(questions_len)
 
                             if question_index > questions_len - 1:
                                 questions.append(question_dict)
