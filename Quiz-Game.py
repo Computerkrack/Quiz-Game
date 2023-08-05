@@ -40,18 +40,25 @@ match playing:
                         if question_index <= 0:
                             print('Bitte gib eine Zahl größer als 0 ein')
                             continue
-                        elif question_index + 1 > questions_len:
+                        elif question_index > questions_len:
                             print(f'Die Frage {question_index + 1} existiert nicht!')
                             continue
                         else:
                             question_text = input('Wie soll die Frage lauten? ')
                             question_answer = input('Wie lautet die Antwort? ')
 
-                            questions[question_index] = {
+                            question_dict = {
                                 'question': question_text,
                                 'answer': question_answer
                             }
+
+                            print(question_index)
+                            print(questions_len)
+
+                            if question_index > questions_len - 1:
+                                questions.append(question_dict)
+                            else:
+                                questions[question_index] = question_dict
                         pass
                     else:
                         print("Bitte gebe eine Zahl ein!")
-
